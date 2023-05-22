@@ -69,11 +69,28 @@ Note that while **Docker Engine** is free to use, **Docker Desktop** may require
 you to purchase a license.  See the [Docker Engine Server installation
 instructions](https://docs.docker.com/engine/install/#server) for details.
 
-### Set Up Docker Image
-Pull the provided docker image.
+## Build an image
+First clone the repo `BigDL` to the local.
 ```bash
-docker pull intelanalytics/bigdl-chronos:latest
+git clone https://github.com/intel/BigDL-Time-Series-Toolkit.git
+cd BigDL-Time-Series-Toolkit
+git clone https://github.com/intel-analytics/BigDL.git
 ```
+Then build image with the default options, you can simply use the following command:
+```bash
+sudo docker build -t intelanalytics/bigdl-chronos:latest -f Dockerfile.bigdl_tstoolkit . # You may choose any NAME:TAG you want.
+```
+(Optional) If you need a proxy, you can add two additional build args to specify it:
+```bash
+# typically, you need a proxy for building since there will be some downloading.
+sudo docker build \
+    --build-arg http_proxy=http://<your_proxy_ip>:<your_proxy_port> \ #optional
+    --build-arg https_proxy=http://<your_proxy_ip>:<your_proxy_port> \ #optional
+    -t intelanalytics/bigdl-chronos:latest . # You may choose any NAME:TAG you want.
+```
+According to your network status, this building will cost **~15 mins**. 
+
+**Tips:** When errors happen like `failed: Connection timed out.`, it's usually related to the bad network status. Please build with a proxy.
 
 This docker image already contains a basic BigDL Time Series Toolkit conda environment with minimal dependencies and the workflow example notebook. Some additional dependencies will be installed later in section **Run Docker Image**.
 
